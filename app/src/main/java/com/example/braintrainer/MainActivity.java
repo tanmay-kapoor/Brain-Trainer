@@ -64,23 +64,50 @@ public class MainActivity extends AppCompatActivity {
 
     public void generateQuestion() {
 
-        int sum, wrongAns;
+        char[] operators = {'+', '-', '*'};
+        int result = 0, wrongAns;
 
         Random rand = new Random();
         int num1 = rand.nextInt(21);
         int num2 = rand.nextInt(21);
+        int operator = rand.nextInt(3);
+        int bound = 21;
 
-        sumTextView.setText(Integer.toString(num1) + " + " + Integer.toString(num2));
-        sum = num1 + num2;
+        sumTextView.setText(Integer.toString(num1) + " " + operators[operator] + " " + Integer.toString(num2));
+        switch(operator) {
+
+            case 0:
+                result = num1 + num2;
+                break;
+
+            case 1:
+                result = num1-num2;
+                break;
+
+            case 2:
+                result = num1*num2;
+                bound = 401;
+                break;
+        }
+
         ansLocation = rand.nextInt(4);
 
         for(int i=0; i<4; i++) {
             if(i == ansLocation)
-                answers.add(sum);
+                answers.add(result);
             else{
-                wrongAns = rand.nextInt(41);
-                while(wrongAns == sum) {
-                    wrongAns = rand.nextInt(41);
+
+                wrongAns = rand.nextInt(bound);
+
+                if (result<0)
+                    wrongAns *= -1;
+
+                while(wrongAns == result) {
+
+                    wrongAns = rand.nextInt(bound);
+
+                    if (result<0)
+                        wrongAns *= -1;
                 }
                 answers.add(wrongAns);
             }
